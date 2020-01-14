@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class GalaxobotMain extends Game {
 
-	private ShapeRenderer debugRenderer;
+	public ShapeRenderer debugRenderer;
 	private GameScreen gameScreen;
 
 	@Override

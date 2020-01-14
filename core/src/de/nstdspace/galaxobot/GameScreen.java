@@ -1,7 +1,9 @@
 package de.nstdspace.galaxobot;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -21,6 +23,8 @@ public class GameScreen extends ScreenAdapter {
 
     private ArrayList<GameActor> gameActors;
 
+    private Color DEBUG_BACKGROUND_COLOR = Color.PURPLE;
+
     public GameScreen(GalaxobotMain main){
         this.main = main;
         initViewportAndCamera();
@@ -39,7 +43,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void initGameStage() {
-        gameStage = new Stage();
+        gameStage = new Stage(gameViewport);
         for(GameActor actor : gameActors){
             gameStage.addActor(actor);
         }
@@ -54,9 +58,6 @@ public class GameScreen extends ScreenAdapter {
     private void initViewportAndCamera() {
         OrthographicCamera camera = new OrthographicCamera(worldWidth, worldHeight);
         gameViewport = new FitViewport(worldWidth, worldHeight, camera);
-        gameStage = new Stage(gameViewport);
-        gameStage.setDebugAll(true);
-        //        gameViewport.update((int) worldWidth, (int) worldHeight, true);
         camera.position.setZero();
         camera.update();
     }
@@ -64,13 +65,16 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-//        gameStage.getViewport().update(width, height, false);
-        gameViewport.update(width, height, false);
+        gameStage.getViewport().update(width, height, false);
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
+        main.debugRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        main.debugRenderer.setColor(DEBUG_BACKGROUND_COLOR);
+        main.debugRenderer.rect(0, 0, worldWidth, worldHeight);
+        main.debugRenderer.end();
         gameStage.act();
         gameStage.draw();
     }
