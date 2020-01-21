@@ -3,20 +3,26 @@ package de.nstdspace.galaxobot;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+import java.util.Random;
 
 public class GalaxobotMain extends Game {
 
 	public ShapeRenderer debugRenderer;
 	private GameScreen gameScreen;
 
+	private static Random random;
+	private static final long seed = 123456789;
+
 	@Override
 	public void create () {
 		Resources.load();
+		random = new Random(seed);
 		debugRenderer = new ShapeRenderer();
 		gameScreen = new GameScreen(this);
 		setScreen(gameScreen);
+		Gdx.input.setInputProcessor(new GameInputProcessor(gameScreen));
 	}
 
 	@Override
